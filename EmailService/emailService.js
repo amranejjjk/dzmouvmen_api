@@ -41,7 +41,7 @@ class EmailService {
               <div class="container">
                 <h1>Reset Your Password</h1>
                 <p>To reset your password, please click on the following link:</p>
-                <p><a href="http://localhost:8000/api/v1/reset-password/${resetToken}">Reset Password</a></p>
+                <p><a href="http://77.37.120.78:8000/api/v1/reset-password/${resetToken}">Reset Password</a></p>
               </div>
             </body>
           </html>

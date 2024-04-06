@@ -19,6 +19,6 @@ app.use('/api/v1/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const PORT=process.env.PORT || 8000 ;
 
-app.listen(PORT,()=>{
-    console.log('server is runing ......');
+app.listen(PORT, () => {
+    console.log('server is running on : ', PORT);
 })

@@ -1,7 +1,7 @@
 // controllers/shopStateController.js
 const pool = require('../database/index');
 
-const ShopState = require('../models/ShopState');
+// const ShopState = require('../models/ShopState');
 
 const shopStateController = {
   getShopState: async (req, res) => {
