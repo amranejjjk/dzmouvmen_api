@@ -1,21 +1,24 @@
 {
   "development": {
+    "port":"3306",
     "username": "root",
-    "password": null,
+    "password": "d$Z7m&M0vM@n!#08",
     "database": "Dzmmovment",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
+    "port":"3306",
     "username": "root",
-    "password": null,
+    "password": "d$Z7m&M0vM@n!#08",
     "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
+    "port":"3306",
     "username": "root",
-    "password": null,
+    "password": "d$Z7m&M0vM@n!#08",
     "database": "database_production",
     "host": "127.0.0.1",
     "dialect": "mysql"
