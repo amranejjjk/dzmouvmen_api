@@ -4,7 +4,9 @@ const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
 const pool = require('../database/index');
+const nodemailer = require('nodemailer');
 require('dotenv').config();
+const emailservice=require('../EmailService/emailService');
 
 
 
@@ -33,6 +35,10 @@ const usersController = {
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {
         return res.status(401).json({ error: 'Invalid email or password' });
+      }
+      // add this update 
+      if (user.verrified===0) {
+        return res.status(401).json({ error: 'Please Verrifie Your Email Adress' });
       }
       
 
@@ -76,6 +82,14 @@ const usersController = {
       await pool.query('INSERT INTO users (name, email, password, userId, coins) VALUES (?, ?, ?, ?, ?)', [name, email, hashedPassword, userId, coins]);
       // update other user coins with refral_link 
       referrerExists ? await updateUserCoinsById(refral_link):null
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user:process.env.EMAIL , // Your Gmail email address
+          pass:  process.env.PASSWORD// Your Gmail password or an app-specific password
+        }
+       });
+      await transporter.sendMail(emailservice.generateVerrificationEmail(email));
       res.status(200).json({ message: 'User created successfully' });
     } catch (error) {
       console.error('Error during signup:', error);
@@ -181,7 +195,28 @@ const usersController = {
       console.error('Error fetching users:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
-  }
+  },
+  async  updateUserVerificationStatus(email) {
+    try {
+        // Get a connection from the pool
+        const connection = await pool.getConnection();
+
+        // Run the query to update verrified status
+        const [rows, fields] = await connection.execute(
+            'UPDATE users SET verrified = 1 WHERE email = ?',
+            [email]
+        );
+
+        // Release the connection back to the pool
+        connection.release();
+
+        console.log(`Updated verification status for email ${email}`);
+        return true; // Indicate successful update
+    } catch (error) {
+        console.error('Error updating verification status:', error);
+        throw error; // Throw error for handling at a higher level
+    }
+}
 
 };
 
@@ -217,7 +252,7 @@ async function updateUserCoinsById(userId) {
     }
     
     // Update the user's coins by adding 2
-    await pool.query('UPDATE users SET coins = coins + 10 WHERE userId = ?', [userId]);
+    await pool.query('UPDATE users SET coins = coins + 3 WHERE userId = ?', [userId]);
     console.log('User coins updated successfully');
   } catch (error) {
     console.error('Error updating user coins:', error);
