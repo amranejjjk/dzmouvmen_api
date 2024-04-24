@@ -92,7 +92,7 @@ const usersController = {
       await transporter.sendMail(emailservice.generateVerrificationEmail(email));
       res.status(200).json({ message: 'User created successfully' });
     } catch (error) {
-      console.error('Error during signup:', error);
+      console.error('Error during signup Methode:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   },
