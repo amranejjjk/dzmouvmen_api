@@ -57,20 +57,20 @@ const usersController = {
 
 
   signUp: async (req, res) => {
-    const { name, email, password, refral_link } = req.body;
+    const { name, email, password } = req.body;
     let coins = 0;
-    let referrerExists=false;
+    // let referrerExists=false;
 
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Name, email, and password are required' });
     }
 
     try {
-      if (refral_link) {
-         referrerExists = await findUserById(refral_link);
-        coins = referrerExists ? 10 : 0;
+      // if (refral_link) {
+      //    referrerExists = await findUserById(refral_link);
+      //   coins = referrerExists ? 10 : 0;
 
-      }
+      // }
 
       const [rows, fields] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
       if (rows.length > 0) {
@@ -81,15 +81,15 @@ const usersController = {
       const hashedPassword = await bcrypt.hash(password, 10);
       await pool.query('INSERT INTO users (name, email, password, userId, coins) VALUES (?, ?, ?, ?, ?)', [name, email, hashedPassword, userId, coins]);
       // update other user coins with refral_link 
-      referrerExists ? await updateUserCoinsById(refral_link):null
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user:process.env.EMAIL , // Your Gmail email address
-          pass:  process.env.PASSWORD// Your Gmail password or an app-specific password
-        }
-       });
-      await transporter.sendMail(emailservice.generateVerrificationEmail(email));
+      // referrerExists ? await updateUserCoinsById(refral_link):null
+      // const transporter = nodemailer.createTransport({
+      //   service: 'gmail',
+      //   auth: {
+      //     user:process.env.EMAIL , // Your Gmail email address
+      //     pass:  process.env.PASSWORD// Your Gmail password or an app-specific password
+      //   }
+      //  });
+      // await transporter.sendMail(emailservice.generateVerrificationEmail(email));
       res.status(200).json({ message: 'User created successfully' });
     } catch (error) {
       console.error('Error during signup Methode:', error);
