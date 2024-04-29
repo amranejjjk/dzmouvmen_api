@@ -9,7 +9,7 @@ const usersController = {
     }
 
     try {
-      const [rows, fields] = await pool.query('SELECT userId, name FROM users WHERE name LIKE ?', [`${username}%`]);
+      const [rows, fields] = await pool.query('SELECT userId, email, name FROM users WHERE name LIKE ? OR email LIKE ?', [`%${username}%`, `%${username}%`]);
 
       if (rows.length > 0) {
         return res.status(200).json({ users: rows });
