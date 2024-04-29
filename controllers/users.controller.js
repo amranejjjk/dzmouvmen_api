@@ -37,9 +37,9 @@ const usersController = {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
       // add this update 
-      if (user.verrified===0) {
-        return res.status(401).json({ error: 'Please Verrifie Your Email Adress' });
-      }
+      // if (user.verrified===0) {
+      //   return res.status(401).json({ error: 'Please Verrifie Your Email Adress' });
+      // }
       
 
       // Generate JWT token
